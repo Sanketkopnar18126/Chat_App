@@ -4,7 +4,7 @@ connectDb()
    .then(() => {
       app.listen(process.env.PORT || 8002, () => {
          console.log(
-            `server start successfully....DbConnect!!!${process.env.PORT}`
+            `server start successfull....DbConnect!!!${process.env.PORT}`
          );
       });
    })
