@@ -57,6 +57,8 @@ const getMessage = asynchHandler(async (req, res) => {
    });
 
    //  but if you used findOne then pt get {}
+   // console.log("Conversation", conversatation);
+
    // console.log("Conversation", conversatation.messages);
 
    if (!conversatation) {
@@ -80,7 +82,7 @@ const getMessage = asynchHandler(async (req, res) => {
    return res
       .status(200)
       .json(
-         new apiResponse(500, { user: getMessage }, "Successfully mssg get")
+         new apiResponse(200, { user: getMessage }, "Successfully mssg get")
       );
 });
 
