@@ -1,5 +1,19 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 export const SignIn = () => {
+   const [userData, setuserData] = useState({
+      username: "",
+      password: "",
+   });
+
+   const onHandleSubmit = async (e) => {
+      e.preventDefault();
+      //   try {
+      //      const res = await fetch("/users/");
+      //   } catch (error) {
+      //      console.log("Error occur at React Ui Part at SignUp Page", error);
+      //   }
+   };
    return (
       <>
          <div className=" h-[96vh] flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -9,16 +23,22 @@ export const SignIn = () => {
                   <span className="text-blue-500"> ChatApp</span>
                </h1>
 
-               <form>
+               <form onSubmit={onHandleSubmit}>
                   <div>
-                     <label className="label p-2">
+                     <label className="label p-2 ">
                         <span className="text-base label-text">Username</span>
                      </label>
                      <input
                         type="text"
-                        placeholder="Enter username"
+                        placeholder="Enter your username"
                         className="w-full input input-bordered h-10"
-                        // value={username}
+                        value={userData.username}
+                        onChange={(e) =>
+                           setuserData({
+                              ...userData,
+                              username: e.target.value,
+                           })
+                        }
                      />
                   </div>
 
@@ -30,7 +50,13 @@ export const SignIn = () => {
                         type="password"
                         placeholder="Enter Password"
                         className="w-full input input-bordered h-10"
-                        // value={password}
+                        value={userData.password}
+                        onChange={(e) =>
+                           setuserData({
+                              ...userData,
+                              password: e.target.value,
+                           })
+                        }
                      />
                   </div>
 
