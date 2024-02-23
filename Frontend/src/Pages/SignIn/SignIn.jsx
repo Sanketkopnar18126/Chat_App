@@ -44,6 +44,7 @@ export const SignIn = () => {
                      {/* disabled={loading} */}
                      <button className="btn btn-block btn-sm mt-2">
                         {/* {loading ? <span className='loading loading-spinner '></span> : "Login"} */}
+                        SignIn
                      </button>
                   </div>
                </form>
