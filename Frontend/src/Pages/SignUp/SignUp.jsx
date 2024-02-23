@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+// import { toast } from "react-toastify";
 
 export const SignUp = () => {
    const [userData, setuserData] = useState({
@@ -7,20 +8,67 @@ export const SignUp = () => {
       username: "",
       password: "",
       gender: "",
+      profile: "",
    });
-
+   const [loading, setloading] = useState(false);
+   const navigate = useNavigate();
    const onHandleCheckBox = (gender) => {
       setuserData({ ...userData, gender: gender });
    };
 
    const onHandleSubmit = async (e) => {
       e.preventDefault();
-    //   try {
-    //      const res = await fetch("/users/");
-    //   } catch (error) {
-    //      console.log("Error occur at React Ui Part at SignUp Page", error);
-    //   }
+      try {
+         setloading(true);
+         const userFormData = new FormData();
+         userFormData.append("fullname", userData.fullname);
+         userFormData.append("username", userData.username);
+         userFormData.append("password", userData.password);
+         userFormData.append("gender", userData.gender);
+         // userFormData.append("profile", userData.profile);
+         for (let i = 0; i < userData.profile.length; i++) {
+            userFormData.append("profile", userData.profile[i]);
+         }
+         console.log("userFormData", userFormData);
+         const res = await fetch("/users/register", {
+            method: "POST",
+
+            body: userFormData,
+         });
+         // console.log(res);
+         if (res.ok) {
+            const data = await res.json();
+            // console.log(data);
+
+            // toast.success("Account Successfully created ", {
+            //    position: "top-right",
+            //    autoClose: 2000,
+            //    hideProgressBar: false,
+            //    closeOnClick: true,
+            // });
+            setuserData({
+               username: "",
+               password: "",
+               profile: "",
+               fullname: "",
+               gender: "",
+            });
+            navigate("/signin");
+            setloading(false);
+         }
+         setloading(false);
+      } catch (error) {
+         console.log("Error occur at React Ui Part at SignUp Page", error);
+         setloading(false);
+         // toast.success("Fill details properly ", {
+         //    position: "top-right",
+         //    autoClose: 2000,
+         //    hideProgressBar: false,
+         //    closeOnClick: true,
+         // });
+      }
    };
+   // console.log("User", userData);
    return (
       <>
          <div className="h-[96vh] flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -83,7 +131,27 @@ export const SignUp = () => {
                         }
                      />
                   </div>
+                  {/* Add Images */}
+                  <div>
+                     <label className="label">
+                        <span className="text-base label-text">
+                           Choose Profile
+                        </span>
+                     </label>
 
+                     <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        className="w-full input input-bordered h-10"
+                        onChange={(e) =>
+                           setuserData({
+                              ...userData,
+                              profile: e.target.files,
+                           })
+                        }
+                     />
+                  </div>
                   {/* Gender Details */}
                   {/* <GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} /> */}
                   <div className="flex">
@@ -126,8 +194,11 @@ export const SignUp = () => {
                   <div>
                      {/* disabled={loading} */}
                      <button className="btn btn-block btn-sm mt-2 border border-slate-700">
-                        {/* {loading ? <span className='loading loading-spinner'></span> : "Sign Up"} */}
-                        SignUp
+                        {loading ? (
+                           <span className="loading loading-spinner"></span>
+                        ) : (
+                           "Sign Up"
+                        )}
                      </button>
                   </div>
                </form>

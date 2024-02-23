@@ -1,18 +1,53 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signInSuccess } from "../../Slice/user.slice";
+// import { toast } from "react-toastify";
+
 export const SignIn = () => {
    const [userData, setuserData] = useState({
       username: "",
       password: "",
    });
+   const [loading, setloading] = useState(false);
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
    const onHandleSubmit = async (e) => {
       e.preventDefault();
-      //   try {
-      //      const res = await fetch("/users/");
-      //   } catch (error) {
-      //      console.log("Error occur at React Ui Part at SignUp Page", error);
-      //   }
+      try {
+         setloading(true);
+         const res = await fetch("/users/login", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+         });
+
+         if (res.ok) {
+            const data = await res.json();
+            dispatch(signInSuccess(data));
+            // toast.success("Log In Successfully Created", {
+            //    position: "top-right",
+            //    autoClose: 2000,
+            //    hideProgressBar: false,
+            //    closeOnClick: true,
+            // });
+            setuserData({
+               username: "",
+               password: "",
+            });
+            setloading(false);
+            navigate("/");
+         }
+
+         setloading(false)
+
+      } catch (error) {
+         console.log("Error occur at React Ui Part at SignUp Page", error);
+         setloading(false);
+      }
    };
    return (
       <>
@@ -69,8 +104,7 @@ export const SignIn = () => {
                   <div>
                      {/* disabled={loading} */}
                      <button className="btn btn-block btn-sm mt-2">
-                        {/* {loading ? <span className='loading loading-spinner '></span> : "Login"} */}
-                        SignIn
+                        {loading ? <span className='loading loading-spinner '></span> : "Login"}
                      </button>
                   </div>
                </form>
