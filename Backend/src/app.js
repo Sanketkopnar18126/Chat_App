@@ -32,10 +32,10 @@ import usersRouter from "./routes/users-data.routes.js";
 // auth routes
 app.use("/api/v1/users", userRouter);
 // Messge routes
-app.use("/api/v1/send", messageRouter);
-app.use("/api/v1/get", messageRouter);
+app.use("/api/v1/users/send", messageRouter);
+app.use("/api/v1/users/get", messageRouter);
 
 //  All Users from our app
-app.use("/api/v1/all_users", usersRouter);
+app.use("/api/v1/users/all_users", usersRouter);
 
 export { app };
