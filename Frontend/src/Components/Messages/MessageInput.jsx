@@ -1,32 +1,31 @@
 import { useState } from "react";
 import { BsSend } from "react-icons/bs";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 export const MessageInput = () => {
-const [mssg,setmssg]=useState()
-const {users}=useSelector((state)=>state.usersdata)
-// console.log(users)
-// console.log("mssg",mssg)
-   const onHandleSendBtn=async(e)=>{
-      e.preventDefault()
+   const [mssg, setmssg] = useState();
+   const { users } = useSelector((state) => state.usersdata);
+   // console.log(users)
+   // console.log("mssg",mssg)
+   const onHandleSendBtn = async (e) => {
+      e.preventDefault();
       try {
-         const res=await fetch(`/users/send/send_message/${users?._id}`,{
-            method:'POST',
-            headers:{
-               'Content-Type':'application/json'
+         const res = await fetch(`/users/send/send_message/${users?._id}`, {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
             },
-            body:JSON.stringify({message:mssg})
-         })
+            body: JSON.stringify({ message: mssg }),
+         });
 
-         if(res.ok){
-            const data=await res.json()
-            console.log("data",data)
+         if (res.ok) {
+            const data = await res.json();
+            // console.log("data",data)
          }
-         setmssg("")
-         
+         setmssg("");
       } catch (error) {
-         console.log("error at send messg in Messg IP Comp",error)
+         console.log("error at send messg in Messg IP Comp", error);
       }
-   }
+   };
 
    return (
       <>
@@ -35,7 +34,7 @@ const {users}=useSelector((state)=>state.usersdata)
                <input
                   type="text"
                   value={mssg}
-                  onChange={(e)=>setmssg(e.target.value)}
+                  onChange={(e) => setmssg(e.target.value)}
                   className="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 text-white"
                   placeholder="Send a message"
                />

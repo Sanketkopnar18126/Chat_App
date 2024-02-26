@@ -9,7 +9,6 @@ export const SideBar = () => {
             <SearchInput />
             <div className="divider px-3"></div>
             <Conversations />
-            {/* <div className='divider px-3'></div> */}
 
             <LogOutButton />
          </div>

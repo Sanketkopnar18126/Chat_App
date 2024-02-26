@@ -2,7 +2,7 @@ import { TiMessages } from "react-icons/ti";
 import {useSelector} from 'react-redux'
 export const NoChatSelected = () => {
   const {currentUser}=useSelector((state)=>state.userdata)
-  console.log(currentUser)
+  // console.log(currentUser)
   return (
    <>
    <div className='flex items-center justify-center w-full h-full'>

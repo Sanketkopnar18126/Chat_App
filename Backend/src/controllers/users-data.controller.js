@@ -7,7 +7,8 @@ const usersData = asynchHandler(async (req, res) => {
    const getAllUser = await User.find({ _id: { $ne: req?.user?._id } }).select(
       "-password"
    );
-   //    console.log(getAllUser);
+   // console.log(getAllUser);
+   // console.log(getAllUser);
    if (!getAllUser) {
       throw new apiError(500, "Users does not exist");
    }

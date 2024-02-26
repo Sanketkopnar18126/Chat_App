@@ -50,40 +50,38 @@ const sendMessage = asynchHandler(async (req, res) => {
       );
 });
 
-//  get Mssg
 const getMessage = asynchHandler(async (req, res) => {
-   let conversatation = await Conversation.findOne({
-      participants: { $all: [req?.user?._id, req?.params?.id] },
-   });
+   try {
+      let conversation = await Conversation.findOne({
+         participants: { $all: [req?.user?._id, req?.params?.id] },
+      });
+      // console.log("conversation", conversation);
 
-   //  but if you used findOne then pt get {}
-   // console.log("Conversation", conversatation);
+      if (!conversation) {
+         return res
+            .status(500)
+            .json(new apiResponse(500, {}, "Conversation not found"));
+      }
+      const getMessage = await Message.find({
+         _id: { $in: conversation.messages },
+      });
 
-   // console.log("Conversation", conversatation.messages);
+      // console.log("getmssg", getMessage);
 
-   if (!conversatation) {
-      throw apiError(500, "Not Found Conversation");
+      if (!getMessage) {
+         throw new apiError(500, "Mssg Does Not Exist in the Database");
+      }
+
+      return res
+         .status(200)
+         .json(
+            new apiResponse(200, { user: getMessage }, "Successfully mssg get")
+         );
+   } catch (error) {
+      // Handle other errors or log them as needed
+      console.error("Error in getMessage:", error);
+      // return res.status(500).json(new apiResponse(500, null, "Internal Server Error"));
    }
-
-   const getMessage = await Message.findById(conversatation.messages);
-
-   // console.log("get ,ssg", getMessage);
-
-   //  if you use find then you have to use map return type is [{}]
-
-   // const getId = await conversatation?.map((id) => console.log(id.messages));
-   // const message=await Message.findById(conversataion?.m)
-   // console.log("GetId", getId?.messages);
-
-   if (!getMessage) {
-      throw new apiError(500, "Mssg Does Not exist at Db");
-   }
-
-   return res
-      .status(200)
-      .json(
-         new apiResponse(200, { user: getMessage }, "Successfully mssg get")
-      );
 });
 
 export { sendMessage, getMessage };

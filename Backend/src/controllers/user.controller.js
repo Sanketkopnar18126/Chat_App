@@ -143,7 +143,7 @@ const logOut = asynchHandler(async (req, res) => {
          new: true,
       }
    );
-   console.log("User", user);
+   // console.log("User", user);
    if (!user) {
       throw new apiError(404, "User does not exist");
    }
