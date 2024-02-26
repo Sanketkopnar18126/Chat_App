@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { BsSend } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSendMessageData } from "../../Slice/usersendmessage.slice";
 export const MessageInput = () => {
    const [mssg, setmssg] = useState();
    const { users } = useSelector((state) => state.usersdata);
    // console.log(users)
    // console.log("mssg",mssg)
+   const dispatch=useDispatch()
    const onHandleSendBtn = async (e) => {
       e.preventDefault();
       try {
@@ -19,7 +21,9 @@ export const MessageInput = () => {
 
          if (res.ok) {
             const data = await res.json();
-            // console.log("data",data)
+
+            console.log("Mssg send",data)
+            dispatch(setSendMessageData(data))
          }
          setmssg("");
       } catch (error) {
