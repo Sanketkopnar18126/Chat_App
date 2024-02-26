@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
+import { extractTime } from "../../Utils/extractTime";
 // import { setMessageData } from "../../Slice/usermessage.slice";
 
 export const Message = () => {
@@ -35,7 +36,7 @@ export const Message = () => {
    }, [users,userSendMessage]);
   //  console.log("message", message);
    return (
-      <div className="relative" >
+      <div className="relative overflow-y-auto" >
      {loading ? (
    <span className=" absolute bottom-[223px] left-[179px] loading loading-bars w-[3.25rem]"></span>
     ) : (
@@ -48,6 +49,7 @@ export const Message = () => {
             ? currentUser?.data?.user?.profile
             : users?.profile;
           const bubbleBgColor = isCurrentUser ? "bg-blue-500" : "";
+          const formattedTime=extractTime(userSendMessage?.data?.user?.createdAt)
           return (
             <div className={`chat ${chatClassName}`} key={item._id}>
               <div className="chat-image avatar">
@@ -64,6 +66,7 @@ export const Message = () => {
               >
                 {item.message}
               </div>
+              <div className='chat-footer opacity-50 text-xs flex gap-1 items-center'>{formattedTime}</div>
             </div>
           );
         })

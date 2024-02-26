@@ -1,10 +1,10 @@
 import { Conversation } from "./Conversation";
 
-export const Conversations = () => {
+export const Conversations = ({ searchTerm }) => {
    return (
       <>
          <div className="py-2 flex flex-col overflow-auto">
-            <Conversation />
+            <Conversation  searchTerm={searchTerm}/>
          </div>
       </>
    );
